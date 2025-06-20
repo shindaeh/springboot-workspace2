@@ -12,6 +12,7 @@ import com.example.spring02_todolist.dto.TodoDTO;
 import com.example.spring02_todolist.entity.TodoEntity;
 import com.example.spring02_todolist.repository.TodoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,6 +62,9 @@ public class TodoServiceImpl implements TodoService {
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void delete(int id) throws Exception {
+		if (!todoRepository.existsById(id)) {
+			throw new EntityNotFoundException("id"+id+"는 존재하지 않습니다.");
+		}
 			todoRepository.deleteById(id);
 	}
 }
